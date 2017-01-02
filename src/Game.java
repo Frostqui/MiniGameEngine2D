@@ -1,6 +1,7 @@
 import java.awt.Canvas;
 import java.awt.Dimension;
-
+import java.awt.Graphics;
+import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
 
@@ -70,9 +71,49 @@ public class Game extends Canvas implements Runnable{
 	@Override
 	public void run() {
 		while(running ){
-			System.out.println("Running...");
+			update();
+			render();
 			
 		}
+		
+	}
+
+	/**
+	 * Game logic. This method is running in a specific time of time, cause if we update and render at the same speed, and you have a better computer, for example, the sprites will move faster. 
+	 */
+	
+	private void update() {
+		
+		
+		
+		
+		
+	}
+	
+	
+	/**
+	 * The computer reders pixel by pixel but this may cause graphical issues, so we need calculate first the pixels and store in a temporary storage. When we have calculated the pixels, we can replace 
+	 * the frame with the new frame calculated. We use a specific area of the RAM using DataBuffer
+	 */
+	
+	private void render() {
+
+		
+		BufferStrategy bs = getBufferStrategy();
+		
+		if(bs == null){
+			
+			/*
+			 * If we got the screen and the storage where the pixels are calculated, we need to wait if we want to calculate another until the first one is calculated. 
+			 * But with the screen and two storage we can process two at the same time
+			 */
+			
+			createBufferStrategy(3);
+			return;
+			
+		}
+	
+		
 		
 	}
 

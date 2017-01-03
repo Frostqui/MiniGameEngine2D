@@ -4,6 +4,7 @@ public class Screen {
 
 	private int width, height;
 	private int[] pixels;
+
 	
 	public Screen(int width, int height){
 		
@@ -13,7 +14,10 @@ public class Screen {
 		
 	}
 
+	
+	
 	public void render(){
+		
 		for (int j=0; j<height; j++){
 			for (int i=0; i<width; i++){
 				pixels[i + j * width] = 0xff00ff;
@@ -21,6 +25,15 @@ public class Screen {
 		}
 	}
 
+	
+	public void clear(){
+		for(int i=0; i<pixels.length; i++){
+			pixels[i] = 0;
+		}
+	}
+	
+	// Getters & Setters
+	
 	public int[] getPixels() {
 		
 		return pixels;

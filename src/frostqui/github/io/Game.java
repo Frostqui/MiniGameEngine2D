@@ -83,11 +83,39 @@ public class Game extends Canvas implements Runnable{
 	
 	@Override
 	public void run() {
+		long lastTime = System.nanoTime(); //nanoTime is better than currentTimeint timer = 0;
+		long timer = System.currentTimeMillis();
+		final double nanoSecs = 1000000000.0 / 60.0;
+		double delta = 0;
+		int fps = 0;
+		int ticks = 0;
+		
+		
+		
 		while(running ){
-			tick();
+			long now = System.nanoTime(); //Not the same time than lastTime
+			delta += (now - lastTime) / nanoSecs; 
+			lastTime  = now;
+			
+			
+			while (delta >= 1){
+				tick();
+				ticks++;
+				delta--;
+			}
+			
 			render();
+			fps++;
+			
+			if(System.currentTimeMillis() - timer > 1000){
+				timer += 1000;
+				System.out.println(ticks+" ticks,  "+fps+" fps");
+				ticks = 0;
+				fps = 0;
+			}
 			
 		}
+		stop();
 		
 	}
 
@@ -130,7 +158,8 @@ public class Game extends Canvas implements Runnable{
 			
 		}
 		
-		screen.render();
+		screen.clear(); //Clear all the pixels of the screen
+		screen.render(); //Render the pixels of the screen
 		
 		for(int i=0; i<pixels.length; i++){
 			pixels[i] = screen.getPixels()[i];

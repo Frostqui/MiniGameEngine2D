@@ -1,9 +1,16 @@
+package frostqui.github.io;
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
+import java.util.Random;
 
 import javax.swing.JFrame;
+
+import frostqui.github.io.graphics.Screen;
 
 public class Game extends Canvas implements Runnable{
 
@@ -16,13 +23,19 @@ public class Game extends Canvas implements Runnable{
 	private Thread thread;
 	private JFrame frame;
 	private boolean running = false;	
+	private Random random;
 	
+	private BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+	private int[] pixels = ((DataBufferInt)image.getRaster().getDataBuffer()).getData(); //Pixels of the screen
+	
+	private Screen screen;
 	
 	
 	public Game(){
 		Dimension dimension = new Dimension(width * scale,height * scale);
 		setPreferredSize(dimension);
 		frame = new JFrame();
+		screen = new Screen(width,height);
 	}
 	
 	public static void main(String[] args) {
@@ -71,7 +84,7 @@ public class Game extends Canvas implements Runnable{
 	@Override
 	public void run() {
 		while(running ){
-			update();
+			tick();
 			render();
 			
 		}
@@ -82,7 +95,7 @@ public class Game extends Canvas implements Runnable{
 	 * Game logic. This method is running in a specific time of time, cause if we update and render at the same speed, and you have a better computer, for example, the sprites will move faster. 
 	 */
 	
-	private void update() {
+	private void tick() {
 		
 		
 		
@@ -109,9 +122,26 @@ public class Game extends Canvas implements Runnable{
 			 */
 			
 			createBufferStrategy(3);
+			
+			
 			return;
 			
+			
+			
 		}
+		
+		screen.render();
+		
+		for(int i=0; i<pixels.length; i++){
+			pixels[i] = screen.getPixels()[i];
+		}
+		
+		Graphics g = bs.getDrawGraphics();
+		
+		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+		
+		g.dispose();
+		bs.show();
 	
 		
 		

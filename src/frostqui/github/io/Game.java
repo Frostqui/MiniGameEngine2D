@@ -10,7 +10,7 @@ import java.util.Random;
 
 import javax.swing.JFrame;
 
-import frostqui.github.io.graphics.Screen;
+import frostqui.github.io.gfx.Screen;
 
 public class Game extends Canvas implements Runnable{
 
@@ -29,6 +29,8 @@ public class Game extends Canvas implements Runnable{
 	private int[] pixels = ((DataBufferInt)image.getRaster().getDataBuffer()).getData(); //Pixels of the screen
 	
 	private Screen screen;
+	
+	int x,y = 0;
 	
 	
 	public Game(){
@@ -125,7 +127,7 @@ public class Game extends Canvas implements Runnable{
 	
 	private void tick() {
 		
-		
+		x++;
 		
 		
 		
@@ -139,6 +141,8 @@ public class Game extends Canvas implements Runnable{
 	
 	private void render() {
 
+		
+		System.setProperty("sun.java2d.opengl", "true");
 		
 		BufferStrategy bs = getBufferStrategy();
 		
@@ -159,7 +163,7 @@ public class Game extends Canvas implements Runnable{
 		}
 		
 		screen.clear(); //Clear all the pixels of the screen
-		screen.render(); //Render the pixels of the screen
+		screen.render(x,y); //Render the pixels of the screen
 		
 		for(int i=0; i<pixels.length; i++){
 			pixels[i] = screen.getPixels()[i];
